@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkpayrail_docs=globalThis.webpackChunkpayrail_docs||[]).push([[3933],{6657(a){a.exports=JSON.parse('{"metadata":{"permalink":"/payrail-docs/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
