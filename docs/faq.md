@@ -127,8 +127,8 @@ Payrail retries failed webhook deliveries up to 3 times with exponential backoff
 
 ## Related guides
 
-- [Getting Started](quickstart.md)
-- [Authentication](authentication.md)
-- [Payment Workflow](payment-workflow.md)
-- [Webhooks](webhooks.md)
-- [API Reference](api-reference.md)
+- [Getting Started](quickstart)
+- [Authentication](authentication)
+- [Payment Workflow](payment-workflow)
+- [Webhooks](webhooks)
+- [API Reference](api-reference)

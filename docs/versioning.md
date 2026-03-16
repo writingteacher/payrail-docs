@@ -72,5 +72,5 @@ Initial release. Includes:
 
 ## Related guides
 
-- [API Reference](api-reference.md)
-- [Authentication](authentication.md)
+- [API Reference](api-reference)
+- [Authentication](authentication)

@@ -107,6 +107,6 @@ If you submit a request with an `Idempotency-Key` that was already used with dif
 
 ## Related guides
 
-- [Getting Started](quickstart.md)
-- [Authentication](authentication.md)
-- [API Reference](api-reference.md)
+- [Getting Started](quickstart)
+- [Authentication](authentication)
+- [API Reference](api-reference)

@@ -109,5 +109,5 @@ Every resource in the Payrail API returns a consistent object structure. Use the
 
 ## Related guides
 
-- [API Reference](api-reference.md)
-- [Payment Workflow](payment-workflow.md)
+- [API Reference](api-reference)
+- [Payment Workflow](payment-workflow)

@@ -163,4 +163,4 @@ curl -X POST https://payrail-api.onrender.com/api/refunds \
 
 - Read the full [API Reference](api-reference.md) for all available endpoints
 - Learn about [Authentication](authentication.md) and JWT tokens
-- Download the [Postman Collection](../postman/payrail-api.postman_collection.json) to test all endpoints instantly
+- Download the [Postman Collection](https://github.com/writingteacher/payrail-docs/raw/main/postman/payrail-api.postman_collection.json) to test all endpoints instantly

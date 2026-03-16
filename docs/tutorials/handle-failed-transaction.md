@@ -215,6 +215,6 @@ When a payment fails:
 
 ## Next steps
 
-- [Set up webhooks](../webhooks.md) to receive failure notifications automatically
-- [Request a refund](../api-reference.md#refunds) if a completed payment needs to be reversed
-- [API Reference](../api-reference.md) for full endpoint details
+- [Set up webhooks](../webhooks) to receive failure notifications automatically
+- [Request a refund](../api-reference#refunds) if a completed payment needs to be reversed
+- [API Reference](../api-reference) for full endpoint details

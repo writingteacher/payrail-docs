@@ -141,6 +141,6 @@ Always verify this signature before processing the event.
 
 ## Related guides
 
-- [Payment Workflow](payment-workflow.md)
-- [API Reference](api-reference.md)
-- [Getting Started](quickstart.md)
+- [Payment Workflow](payment-workflow)
+- [API Reference](api-reference)
+- [Getting Started](quickstart)

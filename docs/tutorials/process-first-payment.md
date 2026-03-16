@@ -21,7 +21,7 @@ By the end of this tutorial you will have:
 ## Prerequisites
 
 - A REST client such as [Postman](https://www.postman.com) or curl
-- The [Payrail Postman Collection](../../postman/payrail-api.postman_collection.json) imported and ready
+- The [Payrail Postman Collection](https://github.com/writingteacher/payrail-docs/raw/main/postman/payrail-api.postman_collection.json) imported and ready
 
 ---
 
@@ -179,6 +179,6 @@ In this tutorial you:
 
 ## Next steps
 
-- [Handle a failed transaction and retry](handle-failed-transaction.md)
-- [Request a refund](../api-reference.md#refunds)
-- [Set up webhooks](../webhooks.md) to receive status updates automatically instead of polling
+- [Handle a failed transaction and retry](handle-failed-transaction)
+- [Request a refund](../api-reference#refunds)
+- [Set up webhooks](../webhooks) to receive status updates automatically instead of polling

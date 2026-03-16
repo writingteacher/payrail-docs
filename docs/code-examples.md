@@ -300,6 +300,6 @@ refund = response.json()
 
 ## Related guides
 
-- [Getting Started](quickstart.md)
-- [API Reference](api-reference.md)
-- [Payment Workflow](payment-workflow.md)
+- [Getting Started](quickstart)
+- [API Reference](api-reference)
+- [Payment Workflow](payment-workflow)
