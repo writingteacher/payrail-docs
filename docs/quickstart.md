@@ -10,6 +10,12 @@ Payrail is a fintech payments API that lets you manage customers, payment method
 https://payrail-api.onrender.com
 ```
 
+## Who is this for?
+
+This guide is written for backend developers integrating payments into their application. You will need basic familiarity with REST APIs and HTTP requests. No prior payments experience is required.
+
+---
+
 ## Before you begin
 
 You will need:
@@ -163,4 +169,4 @@ curl -X POST https://payrail-api.onrender.com/api/refunds \
 
 - Read the full [API Reference](api-reference.md) for all available endpoints
 - Learn about [Authentication](authentication.md) and JWT tokens
-- Download the [Postman Collection](https://raw.githubusercontent.com/writingteacher/payrail-docs/main/postman/payrail-api.postman_collection.json) to test all endpoints instantly
+- Download the [Postman Collection](https://www.postman.com/techcomteacher99-7835706/workspace/payrail-api/collection/53069530-700ccabf-377e-47c2-9513-f36683e4777f?action=share&source=copy-link&creator=53069530) — open directly in Postman Web  

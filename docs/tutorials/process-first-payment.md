@@ -21,7 +21,7 @@ By the end of this tutorial you will have:
 ## Prerequisites
 
 - A REST client such as [Postman](https://www.postman.com) or curl
-- The [Payrail Postman Collection](https://raw.githubusercontent.com/writingteacher/payrail-docs/main/postman/payrail-api.postman_collection.json) imported and ready
+- The [Payrail Postman Collection](https://www.postman.com/techcomteacher99-7835706/workspace/payrail-api/collection/53069530-700ccabf-377e-47c2-9513-f36683e4777f?action=share&source=copy-link&creator=53069530)
 
 ---
 

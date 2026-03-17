@@ -119,7 +119,11 @@ const config = {
               },
               {
                 label: 'API Reference',
-                to: '/docs/api-reference/customers',
+                to: '/docs/api-reference',
+              },
+              {
+                label: 'Errors',
+                to: '/docs/errors',
               },
             ],
           },

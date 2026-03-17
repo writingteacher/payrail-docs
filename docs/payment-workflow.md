@@ -31,6 +31,8 @@ Follow these steps in order to process a payment successfully.
 3. POST /api/transactions      → Create a transaction
 4. GET  /api/transactions/:id  → Poll for status update
 5. POST /api/refunds           → Request a refund (if needed)
+
+Steps 1 and 2 are one-time setup steps. Steps 3–5 repeat for each payment.
 ```
 
 ### Step-by-step
