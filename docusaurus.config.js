@@ -148,6 +148,15 @@ const config = {
         darkTheme: prismThemes.dracula,
       },
     }),
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        language: ["en"],
+      },
+    ],
+  ],
 };
 
 export default config;
