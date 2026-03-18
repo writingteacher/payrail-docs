@@ -1,9 +1,6 @@
----
-sidebar_position: 4
----
 # Webhooks
 
-Payrail uses webhooks to notify your application when asynchronous events occur. Instead of polling the API for status updates, you can register a webhook endpoint to receive real-time event notifications.
+Payrail uses webhooks to notify your application when asynchronous events occur. Instead of polling the API for status updates, register a webhook endpoint to receive real-time event notifications.
 
 ---
 
@@ -11,28 +8,27 @@ Payrail uses webhooks to notify your application when asynchronous events occur.
 ```
 Payrail API
      ↓
-Event occurs (e.g. payment completed)
+Event occurs (e.g. transaction status changes to completed)
+     ↓
+Payrail signs the payload with your webhook secret
      ↓
 Payrail sends POST request to your webhook URL
      ↓
-Your server receives and processes the event
+Your server verifies the signature and processes the event
 ```
 
-When an event occurs, Payrail sends an HTTP `POST` request to your registered webhook URL with a JSON payload describing the event.
+When an event occurs, Payrail sends an HTTP `POST` request to your registered webhook URL with a signed JSON payload describing the event.
 
 ---
 
 ## Event types
 
-| Event | Description |
-|-------|-------------|
-| `payment.succeeded` | A transaction was successfully completed |
-| `payment.failed` | A transaction was declined or failed |
-| `payment.pending` | A transaction has been created and is awaiting processing |
-| `refund.processed` | A refund was successfully processed |
-| `refund.rejected` | A refund request was rejected |
-| `customer.created` | A new customer was registered |
-| `payment_method.added` | A new payment method was added to a customer |
+| Event | Trigger |
+|-------|---------|
+| `payment.succeeded` | Transaction status updated to `completed` |
+| `payment.failed` | Transaction status updated to `failed` |
+| `refund.processed` | Refund status updated to `processed` |
+| `refund.rejected` | Refund status updated to `rejected` |
 
 ---
 
@@ -50,16 +46,16 @@ All webhook events share the same payload structure.
 ```json
 {
     "event": "payment.succeeded",
-    "created_at": "2026-03-14T10:22:08.804Z",
+    "created_at": "2026-03-18T12:46:55.681Z",
     "data": {
-        "_id": "69b536d0bcfe7db4d09c1403",
-        "customer": "69b5330a4314418540e8676e",
-        "paymentMethod": "69b53559c707c55a4e351409",
+        "_id": "69ba9d3e199bf8e79a8050e7",
+        "customer": "69ba9a90199bf8e79a8050e1",
+        "paymentMethod": "69ba9cef199bf8e79a8050e4",
         "amount": 15000,
         "currency": "USD",
         "status": "completed",
-        "description": "Payment for services",
-        "createdAt": "2026-03-14T10:22:08.804Z"
+        "description": "Webhook test payment",
+        "createdAt": "2026-03-18T12:40:30.061Z"
     }
 }
 ```
@@ -68,16 +64,16 @@ All webhook events share the same payload structure.
 ```json
 {
     "event": "payment.failed",
-    "created_at": "2026-03-14T10:22:08.804Z",
+    "created_at": "2026-03-18T12:46:55.681Z",
     "data": {
-        "_id": "69b536d0bcfe7db4d09c1403",
-        "customer": "69b5330a4314418540e8676e",
-        "paymentMethod": "69b53559c707c55a4e351409",
+        "_id": "69ba9d3e199bf8e79a8050e7",
+        "customer": "69ba9a90199bf8e79a8050e1",
+        "paymentMethod": "69ba9cef199bf8e79a8050e4",
         "amount": 15000,
         "currency": "USD",
         "status": "failed",
-        "description": "Payment for services",
-        "createdAt": "2026-03-14T10:22:08.804Z"
+        "description": "Webhook test payment",
+        "createdAt": "2026-03-18T12:40:30.061Z"
     }
 }
 ```
@@ -86,15 +82,15 @@ All webhook events share the same payload structure.
 ```json
 {
     "event": "refund.processed",
-    "created_at": "2026-03-14T10:24:20.638Z",
+    "created_at": "2026-03-18T12:46:55.681Z",
     "data": {
-        "_id": "69b537548386681aea83bfd2",
-        "customer": "69b5330a4314418540e8676e",
-        "transaction": "69b536d0bcfe7db4d09c1403",
+        "_id": "69ba9d3e199bf8e79a8050e7",
+        "customer": "69ba9a90199bf8e79a8050e1",
+        "transaction": "69ba9d3e199bf8e79a8050e7",
         "amount": 15000,
         "reason": "Customer requested refund",
         "status": "processed",
-        "createdAt": "2026-03-14T10:24:20.638Z"
+        "createdAt": "2026-03-18T12:40:30.061Z"
     }
 }
 ```
@@ -126,16 +122,94 @@ After 3 failed attempts the event is marked as undelivered.
 
 ---
 
-## Security
+## Verifying signatures
 
-Payrail signs all webhook payloads with a secret key. Verify the signature on your server to confirm the request came from Payrail and has not been tampered with.
+Payrail signs all webhook payloads using HMAC-SHA256. Always verify the signature before processing an event to confirm the request came from Payrail and has not been tampered with.
 
-Include your webhook secret in the `X-Payrail-Signature` header verification:
+The signature is included in the `X-Payrail-Signature` request header:
 ```
 X-Payrail-Signature: sha256=abc123...
 ```
 
-Always verify this signature before processing the event.
+The signature is generated by computing an HMAC-SHA256 hash of the raw request body using your webhook secret.
+
+> **Important:** Always verify the signature against the **raw request body** — not the parsed JSON object. Parsing the body before verification will cause signature checks to fail.
+
+**Verify in Node.js**
+```javascript
+const crypto = require('crypto');
+
+function verifySignature(rawBody, signature, secret) {
+    const hmac = crypto.createHmac('sha256', secret);
+    hmac.update(rawBody);
+    const expected = `sha256=${hmac.digest('hex')}`;
+    return crypto.timingSafeEqual(
+        Buffer.from(expected),
+        Buffer.from(signature)
+    );
+}
+
+// Express example
+app.post('/webhooks', express.raw({ type: 'application/json' }), (req, res) => {
+    const signature = req.headers['x-payrail-signature'];
+    const isValid = verifySignature(req.body, signature, process.env.WEBHOOK_SECRET);
+
+    if (!isValid) {
+        return res.status(401).json({ error: 'Invalid signature' });
+    }
+
+    const event = JSON.parse(req.body);
+
+    switch (event.event) {
+        case 'payment.succeeded':
+            // fulfil order, send confirmation email, etc.
+            break;
+        case 'payment.failed':
+            // notify customer, retry logic, etc.
+            break;
+        case 'refund.processed':
+            // update order status, notify customer, etc.
+            break;
+    }
+
+    res.json({ received: true });
+});
+```
+
+**Verify in Python**
+```python
+import hmac
+import hashlib
+
+def verify_signature(raw_body, signature, secret):
+    hmac_obj = hmac.new(
+        secret.encode('utf-8'),
+        raw_body,
+        hashlib.sha256
+    )
+    expected = f"sha256={hmac_obj.hexdigest()}"
+    return hmac.compare_digest(expected, signature)
+
+# Flask example
+@app.route('/webhooks', methods=['POST'])
+def handle_webhook():
+    signature = request.headers.get('X-Payrail-Signature')
+    is_valid = verify_signature(request.get_data(), signature, WEBHOOK_SECRET)
+
+    if not is_valid:
+        return jsonify({'error': 'Invalid signature'}), 401
+
+    event = request.get_json()
+
+    if event['event'] == 'payment.succeeded':
+        pass  # fulfil order, send confirmation email, etc.
+    elif event['event'] == 'payment.failed':
+        pass  # notify customer, retry logic, etc.
+    elif event['event'] == 'refund.processed':
+        pass  # update order status, notify customer, etc.
+
+    return jsonify({'received': True})
+```
 
 ---
 
